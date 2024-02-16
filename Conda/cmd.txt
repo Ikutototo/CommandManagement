@@ -1,0 +1,46 @@
+
+## PATH候補
+/Users/saitoikuto/training-feature-classifiers/qiime2-moving-pictures-tutorial/emp-single-end-sequences/GitPackage
+
+
+## conda上仮の仮想環境状態
+conda info -e
+conda env list
+conda info --envs
+
+
+## 仮想環境の構築/起動/終了/shell指定
+conda create -n env
+conda activate env
+conda deactivate 
+conda init bash
+source .bash_profile
+
+
+## 環境上のインストール済みのライブラリーを一覧表示
+conda list -n <仮想環境名>
+1. python(ライブラリー名)
+    >>> import python
+    >>> python._file_
+    ctrl-D
+2. 
+
+
+## packageの検索 <環境で異なる?> (--full-name)/削除
+conda search package
+conda search -c conda-forge package
+anaconda search package
+conda remove -n .env -c .channnels .package
+# note: the fastp version in bioconda may be not the latest
+conda install -c bioconda package
+
+## channels一覧の表示
+conda config --get channels
+conda config --show-sources
+conda config --set channel_priority strict
+conda config --remove channels defaults
+
+## conda configリポジトリにchannelsを追加//指定
+conda config --add channels channels名
+conda config --append channels conda-forge
+

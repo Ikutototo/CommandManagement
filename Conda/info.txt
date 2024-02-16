@@ -1,0 +1,12 @@
+
+### env/qiime2-amplicon-2023.9      [仮想環境上]
+## install_Package_log
+    sra-tools          bioconda/osx-64::sra-tools-2.9.6-h0a44026_0[240207]
+    rename             bioconda/noarch::rename-1.601-hdfd78af_1[240209]
+    fastp              bioconda / packages / fastp 0.23.4
+
+
+
+
+## uninstall_Package_log        
+     sra-tools         bioconda/osx-64::sra-tools-2.9.6-h0a44026_0[240207]

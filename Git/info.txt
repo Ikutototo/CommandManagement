@@ -1,0 +1,10 @@
+## install_Package_log
+    sratoolkit.3.0.10-mac-x86_64    [240209]    [/Users/saitoikuto/miniforge3/envs/qiime2-amplicon-2023.9]
+    
+
+
+## uninstall_Package_log 
+
+
+# GitPackage_Tips
+初回時, cmdは開発元が不明なため, 実行されないため, cmdのみで実行後, システム設定→プライバシーとセキュリティから許可すること

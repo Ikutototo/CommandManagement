@@ -1,0 +1,100 @@
+
+git config user.name                    ユーザ名の確認
+git init                                LocalRepositories → git管理を開始(cd)(.git → ls -a, ls .git/, ls -a .git/)
+
+git diff                                localとstagingとの変更差分を表示(editerで編集した箇所の表示)
+git diff head                           stagingとcommitとの変更差分
+git diff --staged                       stagingとrepositoriesとの変更差分
+
+git add .                               allfile_add → LocalRepositories → staging → git diff 表示されない
+git add .file/directory/.
+git status                              git branch確認, LocalRepositories変更履歴確認
+
+
+# branchでcodeを分岐して開発可能[後にbranchをmergeすることで完成させる]
+git branch -m                           branchの変更
+git branch <branch>                     branchの作成
+git branch -d <branch>                  -d → -D branchの強制削除(-dはmergeされていないと削除不可能), main_branchに移動してから削除する
+# branchの切り替え後は, local[add → commit]はbranchに反映される(つまりbranchごとにcodeが開発される)
+# branchを切り替えた瞬間にediter画面から別branchのfileが消える
+git checkout <existingbranch>           branchの切り替え(branchの変更をcommit後にbranchのcheckoutが可能)  
+git checkout -b <newbranch名>           branch新規作成および切り替え
+
+git commit                              vim editerに移動 → iでstart, esc + :wq(enter)でend(保存)
+git commit -m "massage"                 commit massageがないと, commit不可能
+git commit -v 
+git remote add origin https://github.com/Ikutototo/.git(自分のgitrepositoryURL)
+git branch -M main
+
+git push -u origin main                 originは自分のremote repositoryのurlに対するエイリアス
+git remote remove origin
+error: remote origin already exists.　  既にpathが登録されていること?
+
+
+
+git clone https://github.com/Ikutototo/.git(gitURL)
+
+git log                                 logの確認(commitの前後), j,kでスクロール, qで終了
+--oneline(-n 3),-n 3,-p,-p .file
+
+# パッケージ管理しないfileの指定(.gitignore), #から始まる行はコメント
+# 指定したfileを除外(ex. _html), ルートディレクトリの指定(/root.html), ディレクトリ以下を除外(dir/)
+
+git rm .file                            localから削除,gitの管理から外す
+git rm -r                               directory削除
+git reset HEAD .file                    git管理下に修復
+git checkout .file                      local(ls)に修復
+git rm --cached .file                   git管理下のみ削除
+git mv .oldfile .newfile                fileの移動を記録
+
+
+git config --global alias.ci commit     cmdにaliasを追加[ci=commit]
+git config --global alias.st status     省略したいcmdを指定可能
+git config --global alias.br branch     
+git config --global alias.co checkout
+
+# .gitignoreに除外したい.file名を指定することで, バージョン管理から除外可能
+.gitignore                              バージョン管理しないfileの管理法,#はコメントアウト
+.file                                   指定したfileを除外
+/root.html                              rootdirectoryを指定
+dir/                                    directory以下を除外
+/*/*.css                                /以外の文字列にmatch[*]
+
+# fileへの変更の取り消し [staged前 → local.fileでの変更を戻す(undo) ]
+git checkout -- .file
+git checkout -- directory                
+git checkout -- .
+
+# staged後の変更の取り消し [最新のcommit内容にundoすることと同義]
+git reset HEAD .file
+git reset HEAD directory
+git reset HEAD                          全変更の取り消し
+
+# commitのやり直し [push後は不可]
+git commit --amend
+
+git remote                              remoteRepositoryの表示
+git remote show                         remoteRepository内容の表示
+git remote -v
+git remote add .remote remoteURL        remoteRepositoryにrepositoryを追加
+
+# remoteRepositoryからfetch/pull [fetchは取り消せないため注意?240212, but fetchの方が良い]
+git fetch .remote                       git branch -aに.remoteが存在, local.fileにはまだ反映されない
+git fetch origin 
+git checkout remotes/origin/main        gitremoteからlocal
+git checkout main                       
+git merge remote/origin/main            localにワークツリーを統合[localに反映]
+git pull .remote .branch                git fetch and mergeを一度に実行
+
+# branchがどこにmergeされるか理解した上で使用すること
+git reset --hard origin/main            localをremoteRepository状態に戻す
+git push origin --delete <branch_name>
+
+# remote名の変更
+git remote rename <oldname> <newname>
+git remote rm <remote名>                remoteRepositoryのremove
+
+git merge <branch>                      conflict(main/branchで同じ行を編集後, mergeした場合)
+git merge <remote/branch>
+git merge origin/main
+

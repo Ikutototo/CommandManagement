@@ -1,0 +1,181 @@
+
+1. Overview of QIIME 2 Plugin Workflows[QIIME2]よりFlowに沿って解析を進める
+
+
+
+⭐️必要項目[To do]
+## .qza, .qzv[artifactおよびvisualization]file構造
+## QIIME2にimportするdataはqiime_artifactであることに関して
+## NGSの根本の仕組み(pair end, quality check, error(sequence,dereplicating,denosing,clustering,PCR))
+## noising除去(DADA2,Deblur) → [Overview of QIIME 2 Plugin Workflows [Denoising]を参照]
+## filtering済　→ FeatureTable[Frequency],FeatureData[Sequence] artifact → 下流の解析の基本data
+
+
+⭐️基本項目
+1. .qza, .qzvはzip圧縮 → 直接中身を確認不可能   [.qzaはqiime2でツール間で入出力fileとして利用]
+2. 古いSampleDataは古いversionのQIIMEに載っている
+
+
+
+⭐️Metadata in QIIME 2 [filtering後のmetadataを格納する.tsvを作成する]
+cd /Users/saitoikuto/miniforge3/envs/qiime2-amplicon-2023.9/qiime2-metadata-tutorial/sample-metadata.tsvを参考
+[1. ID(必須) 2. optionでcolumnを追加可能 ]
+[metadataのformatは決まっていないが, data archive (e.g. ENA or Qiita)として保存する場合は, formatが存在する]
+[Numberで編集, copyでediterに貼り付けて.tsvで保存する]
+    Metadata is usually specific to a given microbiome study,
+        and collecting sample metadata is typically one of the first steps you’ll take before beginning a QIIME 2 analysis. 
+        It is up to the investigator to decide what information is collected and tracked as metadata. 
+        QIIME 2 does not place restrictions on what types of metadata are expected to be present; 
+        there are no enforced “metadata standards”. This is your opportunity to track whatever information 
+        you think may be important to your analyses, and unfortunately QIIME 2 is not able to gather 
+        that information for you. When in doubt, collect as much metadata as possible, 
+        as you may not be able to retroactively collect certain types of information
+
+    Metadata Validation
+        Leading and trailing whitespace characters
+            If any cell in the metadata contains leading or trailing whitespace characters (e.g. spaces, tabs), 
+                those characters will be ignored when the file is loaded. 
+                Thus, leading and trailing whitespace characters are not significant, 
+                so cells containing the values 'gut' and '  gut  ' are equivalent. This rule is applied before any other rules described below.
+
+    Comments and Empty Rows
+        Rows whose first cell begins with the pound sign (#) are interpreted as comments and may appear anywhere in the file. 
+            Comment rows are ignored by QIIME 2 and are for informational purposes only. Inline comments are not supported.
+            Empty rows (e.g. blank lines or rows consisting solely of empty cells) may appear anywhere in the file and are ignored.
+
+    Identifier Column
+        The first column in the metadata file is the identifier (ID) column. 
+            This column defines the sample or feature IDs associated with your study. 
+            It is not recommended to mix sample and feature IDs in a single metadata file; 
+            keep sample and feature metadata stored in separate files.
+
+    The ID column name (i.e. ID header) must be one of the following values. 
+    The values listed below may not be used to name other IDs or columns in the file.
+        Case-insensitive:
+            ・id
+            ・sampleid
+            ・sample id
+            ・sample-id
+            ・featureid
+            ・feature i
+            ・feature-id
+    Case-sensitive (these are mostly for backwards-compatibility with QIIME 1, biom-format, and Qiita files):
+            #SampleID
+            #Sample ID
+            #OTUID
+            #OTU ID
+            sample_name
+
+    The following rules apply to IDs: [Sampleを区別するIDの設定方法,ルール]
+        1. IDs may consist of any Unicode characters, with the exception that IDs must not start with the pound sign (#), 
+            as those rows would be interpreted as comments and ignored. 
+            See the section Recommendations for Identifiers for recommendations on choosing identifiers in your study.
+        2.IDs cannot be empty (i.e. they must consist of at least one character).
+        3.IDs must be unique (exact string matching is performed to detect duplicates).
+        4.At least one ID must be present in the file.
+        5.IDs cannot use any of the reserved ID column names listed above.
+        6.Identifiers should be 36 characters long or less.
+        👊.Identifiers should contain only ASCII alphanumeric characters (i.e. in the range of [a-z], [A-Z], or [0-9]), 
+            the period (.) character, or the dash (-) character.
+
+        An important point to remember is that sometimes values in your sample metadata can become identifiers. 
+            For example, taxonomy annotations can become feature identifiers following qiime taxa collapse, 
+            and sample or feature metadata values can become identifiers after applying qiime feature-table group. 
+            If you plan to apply these or similar methods where metadata values can become identifiers, 
+            you will be less likely to encounter problems if the values adhere to these identifier recommendations as well.
+
+    Note [metadataとなる.tsvは下流の解析において解析結果を格納する際に, 識別子として働くため, 厳密な作成ルールが存在する(使用するsoftwareで異なる)]
+    Some bioinformatics tools may have more restrictive requirements on identifiers than the recommendations that are outlined here. 
+        For example, Illumina sample sheet identifiers cannot have . characters, 
+        while we do include those in our set of recommended characters. Similarly, 
+        Phylip requires that identifiers are a maximum of 10 characters, while we recommend length 36 or less. 
+        If you plan to export your data for use with other tools that may have more restrictive requirements on identifiers, 
+        we recommend that you adhere to those requirements in your QIIME 2 analyses as well, to simplify subsequent processing steps.
+
+    Metadata Columns
+        The ID column is the first column in the metadata file, and can optionally be followed by additional columns defining metadata associated 
+        with each sample or feature ID. Metadata files are not required to have additional metadata columns, so a file containing only an ID column is a valid QIIME 2 metadata file.
+    
+    The following rules apply to column names:[カラム名のルール]
+        1.May consist of any Unicode characters.
+        2.Cannot be empty (i.e. column names must consist of at least one character).
+        3.Must be unique (exact string matching is performed to detect duplicates).
+        4.Column names cannot use any of the reserved ID column names described in the section Identifier Column.
+    The following rules apply to column values:[カラム要素のルール]
+        1.May consist of any Unicode characters.
+        2.Empty cells represent missing data. Other values such as NA are not interpreted as missing data; 
+            only the empty cell is recognized as “missing”. Note that cells consisting solely of whitespace characters 
+            are also interpreted as missing data because leading and trailing whitespace characters are always ignored, effectively making the cell empty.
+    
+    Column Types
+
+
+
+
+
+
+
+
+
+⭐️illumina fastq
+What does a FASTQ file look like?
+For each cluster that passes filter, a single sequence is written to the corresponding sample’s R1 FASTQ file, 
+    and, for a paired-end run, a single sequence is also written to the sample’s R2 FASTQ file. Each entry in a FASTQ files consists of 4 lines:
+1.A sequence identifier with information about the sequencing run and the cluster. 
+    The exact contents of this line vary by based on the BCL to FASTQ conversion software used.
+2.The sequence (the base calls; A, C, T, G and N).
+3.A separator, which is simply a plus (+) sign.
+4.The base call quality scores. These are Phred +33 encoded, using ASCII characters to represent the numerical quality scores.
+
+FastQ Files
+BaseSpace Sequence Hub converts *.bcl files into FASTQ files, 
+    which contain base call and quality information for all reads that pass filtering.
+BaseSpace Sequence Hub automatically generates FASTQ files in sample sheet-driven workflow apps. 
+    Other apps that perform alignment and variant calling also automatically use FASTQ files.
+FASTQ files can be used as sequence input for alignment and other secondary analysis software. 
+    Do not use them with tools that are not compatible with the FASTQ format.
+
+How to view a FASTQ file
+FASTQ files can contain up to millions of entries and can be several megabytes or gigabytes in size, 
+    which often makes them too large to open in a normal text editor. 
+    Generally, it is not necessary to view FASTQ files, because they are intermediate output files used as input for tools 
+    that perform downstream analysis, such as alignment to a reference or de novo assembly
+
+Q Score Definition [Phred +33 encoded]
+The sequencing quality score of a given base, Q, is defined by the following equation:
+    Q = -10log10(e)
+where e is the estimated probability of the base call being wrong.
+
+Higher Q scores indicate a smaller probability of error.
+Lower Q scores can result in a significant portion of the reads being unusable. 
+They may also lead to increased false-positive variant calls, resulting in inaccurate conclusions.
+A quality score of 20 (Q20) represents an error rate of 1 in 100 
+(meaning every 100 bp sequencing read may contain an error), with a corresponding call accuracy of 99%. 
+
+When sequencing quality reaches Q30, virtually all of the reads will be perfect, 
+with no errors or ambiguities. This is why Q30 is considered a benchmark for quality in next-generation sequencing (NGS).
+
+# Format
+Element                 Requirements                                        Description       
+@                       @                                                   Each sequence identifier linestarts with @
+<instrument>            Characters allowed: a-z, A-Z,0-9 and underscore     Instrument ID
+<run number>            Numerical                                           Run number on instrument
+<flowcell ID>           Characters allowed: a-z, A-Z,0-9                    Flowcell ID
+<lane>                  Numerical                                           Lane number
+<tile>                  Numerical                                           Tile number
+<x_pos>                 Numerical                                           X coordinate of cluster
+<y_pos>                 Numerical                                           Y coordinate of cluster
+<read>                  Numerical                                           Read number. 1 can be single read or Read 2 of paired-end [F/Rで番号が違う?240214,]         
+<is filtered>           Y or N                                              Y if the read is filtered (did not pass), N otherwise
+<control number>        Numerical                                           0 when none of the control bits are on, otherwise it is an even number. On HiSeq X systems, control specification is not performed and this number is always 0.
+<sample number>         Numerical                                           Sample number from sample sheet
+
+
+
+
+
+
+
+
+
+
