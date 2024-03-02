@@ -1,0 +1,48 @@
+
+⭐️Pattern1.
+## Pairend [Trimming/QC/PrimerTrimming]
+fastp -i Bac1_1.fq.gz -I Bac1_2.fq.gz \
+-o outputBac1_1.fg.gz -O outputBac1_2.fq.gz \
+-h report.html -j report.json 
+<Console>
+    Read1 before filtering:
+    total reads: 172427
+    total bases: 37931509
+    Q20 bases: 37026138(97.6131%)
+    Q30 bases: 35369586(93.2459%)
+
+    Read1 after filtering:
+    total reads: 171906
+    total bases: 37812287
+    Q20 bases: 36938143(97.6882%)
+    Q30 bases: 35295318(93.3435%)
+
+    Read2 before filtering:
+    total reads: 172427
+    total bases: 37932061
+    Q20 bases: 37039687(97.6474%)
+    Q30 bases: 35419539(93.3763%)
+
+    Read2 after filtering:
+    total reads: 171906
+    total bases: 37812471
+    Q20 bases: 36963137(97.7538%)
+    Q30 bases: 35358590(93.5104%)
+
+Filtering result:
+reads passed filter: 343812
+reads failed due to low quality: 1026
+reads failed due to too many N: 16
+reads failed due to too short: 0
+reads with adapter trimmed: 104
+bases trimmed due to adapters: 8067
+
+Duplication rate: 44.9889%
+
+Insert size peak (evaluated by paired-end reads): 407
+
+JSON report: report.json
+HTML report: report.html
+
+fastp -i Bac1_1.fq.gz -I Bac1_2.fq.gz -o outputBac1_1.fg.gz -O outputBac1_2.fq.gz -h report.html -j report.json 
+fastp v0.23.4, time used: 2 seconds

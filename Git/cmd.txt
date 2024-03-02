@@ -29,6 +29,7 @@ git branch -M main
 git push -u origin main                 originは自分のremote repositoryのurlに対するエイリアス
 git remote remove origin
 error: remote origin already exists.　  既にpathが登録されていること?
+git push origin branch-name --force     強制push
 
 
 

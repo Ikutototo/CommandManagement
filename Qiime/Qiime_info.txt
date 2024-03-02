@@ -2,7 +2,6 @@
 1. Overview of QIIME 2 Plugin Workflows[QIIME2]よりFlowに沿って解析を進める
 
 
-
 ⭐️必要項目[To do]
 ## .qza, .qzv[artifactおよびvisualization]file構造
 ## QIIME2にimportするdataはqiime_artifactであることに関して
@@ -12,8 +11,9 @@
 
 
 ⭐️基本項目
-1. .qza, .qzvはzip圧縮 → 直接中身を確認不可能   [.qzaはqiime2でツール間で入出力fileとして利用]
-2. 古いSampleDataは古いversionのQIIMEに載っている
+1. .qza, .qzvはzip圧縮 → 直接中身を確認不可能   [.qzaはqiime2でツール間で入出力fileとして利用, https://view.qiime2.org/]
+2. 古いSampleDataは古いversionのQIIMEに載っている [サイドバーのversionから遡る]
+
 
 
 

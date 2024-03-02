@@ -1,0 +1,19 @@
+
+
+
+## ShortCut
+# keybindings.json or Open Keyboard Shortcuts[コマンドパレット]
+    ⌘ + ⇧ + []                        タブ間の移動
+    ⌘ + ⇧ + K                         行削除
+    ⌘ + ↵                             cursor途中でも改行
+    ⌥ + ↑                             codeの移動
+    ⌘ + ⇧ + p                         コマンドパレット
+    ⌘ + 1                             terminal → editerへ移動
+    ⌃ + @                             editer → terminalへ移動
+    ⇧ + ⇧ + ↓                         copy line up/down
+    ⌘ + back                          サイドバーの表示/非表示
+
+
+
+
+
