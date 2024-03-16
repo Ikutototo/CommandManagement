@@ -26,48 +26,48 @@ author:
 is:
 
 # search repository (検索クエリは，検索したいテキストと，検索を絞り込む修飾子で構成される検索用語で構成)
-in:name 
-in:description
-in:topics
-in:readme
-repo:owner/name
-user:USERNAME
-org:ORGNAME	
+    in:name 
+    in:description
+    in:topics
+    in:readme
+    repo:owner/name
+    user:USERNAME
+    org:ORGNAME	
 
-language:LANGUAGE\
-    rails language:PHP      PHP,「rails」という単語を含む
-topic:TOPIC	topic:jekyll    「Jekyll」というトピックで分類
-size:n	                    size:1000 1 MB
-size:>n	                    size:>=30000 30 MB 
-size:<n	                    size:<50 50 KB 未満
-size:n..n	                size:50...120 50 KBから120 KB
-followers:>=n
-followers:n..n	            styleguide linter followers:1..10 「styleguide linter」1-10人のフォロワーを持つrepository
+    language:LANGUAGE\
+        rails language:PHP      PHP,「rails」という単語を含む
+    topic:TOPIC	topic:jekyll    「Jekyll」というトピックで分類
+    size:n	                    size:1000 1 MB
+    size:>n	                    size:>=30000 30 MB 
+    size:<n	                    size:<50 50 KB 未満
+    size:n..n	                size:50...120 50 KBから120 KB
+    followers:>=n
+    followers:n..n	            styleguide linter followers:1..10 「styleguide linter」1-10人のフォロワーを持つrepository
 
-forks:n	                    forks:5 fork数が5のみ
-forks:>n	                forks:>=205 fork数が205以上
-forks:<n	                forks:<=90 fork数が0未満
-forks:n..n	                forks:10..20 forkの数が10-20個
+    forks:n	                    forks:5 fork数が5のみ
+    forks:>n	                forks:>=205 fork数が205以上
+    forks:<n	                forks:<=90 fork数が0未満
+    forks:n..n	                forks:10..20 forkの数が10-20個
 
-stars:n	stars:500           星の数が500
-stars:n..n size:<n	        星の数が n-n n KB 未満
-stars:>=n fork:true \
-    language:LANGUAGE       PHP, 星の数が500以上,forkの星含む
-    (stars:>=500 fork:true language:php)
+    stars:n	stars:500           星の数が500
+    stars:n..n size:<n	        星の数が n-n n KB 未満
+    stars:>=n fork:true \
+        language:LANGUAGE       PHP, 星の数が500以上,forkの星含む
+        (stars:>=500 fork:true language:php)
 
-topics:n	
-topics:>n	
-mirror:true	/ FALSE
-template:true / FALSE
-archived:true GNOME         アーカイブ, 「GNOME」という単語を含むリポジトリ
+    topics:n	
+    topics:>n	
+    mirror:true	/ FALSE
+    template:true / FALSE
+    archived:true GNOME         アーカイブ, 「GNOME」という単語を含むリポジトリ
 
-good-first-issues:>n \
-    good-first-issues:>2 javascript     good-first-issue labelが付いたissue数が2つを超え，「javascript」という単語を含むrepository
-help-wanted-issues:>n \
-    help-wanted-issues:>4 react         help-wanted labelが付いたissue数が4つを超え，「React」という単語を含むrepository
+    good-first-issues:>n \
+        good-first-issues:>2 javascript     good-first-issue labelが付いたissue数が2つを超え，「javascript」という単語を含むrepository
+    help-wanted-issues:>n \
+        help-wanted-issues:>4 react         help-wanted labelが付いたissue数が4つを超え，「React」という単語を含むrepository
 
-archived:                   検索対象をアーカイブされたリポジトリ
-fork:                       検索対象をフォークされたリポジトリ
-vendored:                   検索対象をベンダーとして検出されたコンテンツ
-generated:                  検索対象を生成済みとして検出されたコンテンツ
+    archived:                   検索対象をアーカイブされたリポジトリ
+    fork:                       検索対象をフォークされたリポジトリ
+    vendored:                   検索対象をベンダーとして検出されたコンテンツ
+    generated:                  検索対象を生成済みとして検出されたコンテンツ
 

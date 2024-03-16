@@ -4,6 +4,12 @@
     man zshbuiltins                 zshのbuilt-in cmdのhelp → 希望のcmdを探すのに時間がかかる
     man ls                          help確認cmd
     df -h .                         利用可能な容量の表示(Mac内)
+    {<>..<>}                        ブレース展開 (ex.echo {1..10})
+
+## Shell変数
+<変数名>=<値>                        $<変数>で参照が可能, 代入時には$は不要, =前後にspaceは不要, 変数の区切りは{}で, 
+                                    ''(or "")で文字列として扱う → $をエスケープ有無で選択
+$()                                 .sh内でcommand出力結果の表示                                    
 
 
 ## Editer ShortCut
@@ -29,7 +35,9 @@
     export PATH=$PATH:$PWD/.package           iterm2が終了するまでPATHとしてenvに保存される[packageのcmd]
     echo $PATH                  PATHの確認
 
-    PATH=$PATH:~/bin            通したいPATH名
+    PATH=$PATH:~/bin            通したいPATH名（環境変数）, 作成した.shを/binへ格納し, PATHを通すことで普通のcmdの様に使用が可能
+
+
     echo "export PATH=$PATH:\
     /Applications/通したいPATH\
     /bin" >> ~/.zshrc
@@ -56,3 +64,99 @@
     ls ..                       親ディレクトリの確認
     ls /bin                     cmdの参照
 
+
+## ShellScript (各command処理を;で繋ぐことが可能 → 行で区切らなくても)
+source ./~.sh                   #(シバン)で始まる.shをTerminal上(Cli)で実行[1行ずつ読み込んで実行], 🌕 実行中のShell環境の影響を受けることに注意 かつ　現在のShell環境にも影響を与える
+                                🌕 ./で相対パスあるいは絶対パスで記述すること, .shのみは避けること
+./.sh                           実行(./は必要)
+
+
+
+## Open Files
+vim .file                       vimでファイルを開く/新規で開く[cdに保存]
+chmod +x .sh                    🌕 .shに実行権限を付与しておく
+./~.sh                          .shの実行(in Terminal)
+
+
+## cmd 
+type cmd                                    aliasかどうか確認 
+ls -l                                       FilePermission(drwxr-xr-x, 1文字目= '-/directory/link', 2-9文字目= ' read/write/execute/-', オーナー・グループ・その他ユーザで権限が決まっている)
+
+chmod u/g/o/a +/-/= r/w/e .file             FilePermissionの設定 
+    chmod +x .sh                            .shに実行権限を付与
+
+ps                                          プロセスの表示(PID=プロセスID, TTY=Terminal, CMD=実行中のcommand)
+
+bg %<jobs numbers>                          jobsをbackgroundで処理
+    command &                               bgでcommandを初めから処理させたい場合は,&を末尾に追加すること
+
+kill %<jobs numbers>                        bgのjobsを終了させる
+
+ls -l > .txt                                command実行結果をfileに保存(リダイレクト機能), [基本は標準出力はTerminalに出力されるが，fileに出力を指定可能,.fileは自動作成される]
+      2> .error.txt                         error出力のリダイレクト(commandから出力されるチャネルが違う)
+      >> .txt                               fileに上書きでリダイレクトではなく，末尾に出力
+
+sort                                        順番を並べ替える
+uniq                                        重複した行を取り除く
+tac                                         逆順に出力
+wc                                          行数/単語数/バイト数を出力
+du                                          file or directoryのバイト数を出力
+    du -a /bin/* | sort -n
+
+
+## EditerTips(編集しない場合は, escキー押しておくこと)
+# normal mode
+    :w                                      vim.fileの保存
+    :w <.file>                              fileに名前をつけて保存（新しく複製コピーされる）
+    :q!                                     編集内容の破棄とvimの終了
+
+    :100 or 100G                            100行目に移動
+    u                                       undo
+    l or space                              右に移動
+    h or backspace                          左へ移動
+    j or ↓                                  下へ移動
+    k or ↑                                  上へ移動
+    M                                       中間行へ移動
+    g + g                                   各codeの最初の行へ移動
+    G                                       最終行へ移動
+    0                                       先頭行へ移動
+    $                                       各codeの最後の行へ移動
+    w                                       単語単位で右移動
+    b                                       単語単位で左移動
+    W                                       space区切りまで右移動
+    B                                       space区切りまで左移動
+    e                                       space区切りごとの最後に移動
+
+    # Delete / Yank / Put
+    x                                       1文字削除
+    dw                                      単語単位で削除
+    d0                                      行頭までを削除
+    cc or dd                                行ブロックまとめて削除
+    dgg                                     最初の行まで削除
+    yy(11yy)                                yank(cursor行から上の行をyank可能)
+    p                                       yankを挿入
+
+
+
+# insert mode
+    a or i                                  insert modeに移行
+    A                                       最終行へ移動
+
+
+# Cliでの編集(Terminal)
+    ⌃ + b/f                                 後方/前方に1文字下がる
+    ⌃ + a/e                                 行頭/行末へ移動
+    esc + b/f                               単語単位で行頭/行末へ移動
+    ⌃ + h/d                                 cursor位置の前方/後方を削除
+    ⌃ + w                                   単語単位で削除
+    ⌃ + k/u, y                              cursor位置から行末/行頭までを削除, 削除した内容を挿入
+
+    ⌃ + p/n or ↑/↓                          command履歴を参照
+    ⌃ + r                                   command履歴の検索
+        ⌃ + r                               検索結果の1つ前のcommand履歴
+        ⌃ + G                               検索結果を破棄
+    ⌃ + z                                   実行中commandの一時停止
+        jobs                                処理中のjobsを表示 (current job = +表示)
+        fg %jobs番号                         一時停止中のcommandを再度表示
+    
+    

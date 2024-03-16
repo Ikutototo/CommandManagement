@@ -24,34 +24,13 @@ vim ~/.zshrc
     autoload run-help           
     HELPDIR=/usr/share/zsh/5.9/help 
     alias help=run-help
+    alias ls='ls -F'
+    alias la='ls -a'
+    alias ll='ls -l'
+    alias rm='rm -i'
+    alias cp='cp -i'
+    alias mv='mv -i'
+    alias mkdir='mkdir -p'
+
     
 
-
-
-
-## EditerTips(編集しない場合は, escキー押しておくこと)
-#cmd mode
-    :100                100行目に移動
-    u                   undo
-    l or space          右に移動
-    back space          左へ移動
-    j or ↓              下へ移動
-    k or ↑              上へ移動
-    H                   先頭行へ移動
-    M                   中間行へ移動
-    g + g               各codeの最初の行へ移動
-    $                   各codeの最後の行へ移動
-    w                   単語単位で右移動
-    b                   単語単位で左移動
-    W                   space区切りまで右移動
-    b                   space区切りまで左移動
-    e                   space区切りごとの最後に移動
-    x                   1文字削除
-    dw                  単語単位で削除
-    cc                  行ブロックまとめて削除
-    yy(11yy)            yank(cursor行から上の行をyank可能)
-    p                   yankを挿入
-
-# insert mode
-    a or i      insert mode 開始
-    A           最終行へ移動
